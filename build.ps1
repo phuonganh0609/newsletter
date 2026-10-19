@@ -1,0 +1,40 @@
+$ErrorActionPreference = 'Stop'
+$template = @'
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Bản tin Trello — ý tưởng nhỏ cho những bước tiến lớn của nhóm.">
+  <title>Trello Newsletter · {{NAME}}</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="styles.css" rel="stylesheet">
+  <link href="{{CSS}}" rel="stylesheet">
+</head>
+<body>
+  <nav class="edition-nav" aria-label="Chọn phiên bản"><a href="index.html">← So sánh bảng màu</a><span>{{NAME}}</span><a href="{{OTHER}}">Xem phiên bản {{NUMBER}} ↗</a></nav>
+  <main class="newsletter container p-0">
+    <header class="masthead d-flex justify-content-between align-items-center"><a class="brand" href="https://trello.com/" aria-label="Trello"><span class="brand-icon" aria-hidden="true"><i></i><i></i></span>Trello</a><span>BẢN TIN / THÁNG 10.2026</span></header>
+    <section class="hero primary-bg">
+      <div class="eyebrow">CÙNG NHAU, TIẾN XA HƠN</div>
+      <h1>Ý tưởng lớn.<br>Bắt đầu từ<br>một tấm thẻ.</h1>
+      <p>Một chút cảm hứng, một cách làm mới. Cùng biến những kế hoạch còn dang dở thành bước tiến tiếp theo của nhóm.</p>
+      <a class="btn btn-accent" href="#noi-dung">Khám phá bản tin <span aria-hidden="true">↘</span></a>
+      <div class="board" role="img" aria-label="Minh họa bảng công việc với ba cột: Ý tưởng, Đang làm và Hoàn thành"><div><b>Ý tưởng <span>02</span></b><article><small>KHỞI ĐẦU</small>Lên ý tưởng mới<div class="mini-line"></div></article><article>Hẹn một buổi sáng tạo<span class="avatar">L</span></article></div><div><b>Đang làm <span>01</span></b><article><small>TẬP TRUNG</small>Từng bước tiến về đích<div class="mini-line short"></div><span class="avatar">M</span></article></div><div><b>Hoàn thành <span>01</span></b><article><small>✓ HOÀN TẤT</small>Ăn mừng thành quả<div class="mini-line"></div></article></div></div>
+    </section>
+    <section class="intro" id="noi-dung"><div class="eyebrow text-primary-color">GỬI BẠN MỘT CHÚT CẢM HỨNG</div><h2>Bớt rối hơn.<br>Làm việc cùng nhau tốt hơn.</h2><p>Xin chào bạn,</p><p>Công việc hiệu quả bắt đầu khi mọi người cùng nhìn thấy một mục tiêu. Bản tin lần này mang đến ba ý tưởng đơn giản để sắp xếp công việc rõ ràng và dành thêm thời gian cho những điều quan trọng.</p></section>
+    <section class="features row g-4" aria-label="Ý tưởng nổi bật"><div class="col-md-6"><article class="feature secondary-bg h-100"><span class="feature-number">01 / SẮP XẾP</span><div class="feature-art" aria-hidden="true">▤</div><h3>Mọi việc đều có<br>một vị trí.</h3><p>Chia bảng thành ba cột: Cần làm, Đang làm và Hoàn thành. Một cấu trúc nhỏ giúp cả nhóm nhìn rõ hành trình.</p><a href="https://trello.com/guide/trello-101">Khám phá cách dùng Trello <span aria-hidden="true">↗</span></a></article></div><div class="col-md-6"><article class="feature accent-bg h-100"><span class="feature-number">02 / KẾT NỐI</span><div class="feature-art" aria-hidden="true">✳</div><h3>Cùng nhịp làm việc.<br>Chung một mục tiêu.</h3><p>Ghi rõ người phụ trách và ngày đến hạn trên từng thẻ. Giữ cuộc trao đổi ngay cạnh công việc để dễ theo dõi.</p><a href="https://trello.com/guide/onboard-team">Bắt đầu cùng nhóm <span aria-hidden="true">↗</span></a></article></div></section>
+    <section class="tip"><span class="eyebrow text-primary-color">03 / THỬ NGAY TUẦN NÀY</span><h2>10 phút để khởi động.</h2><p>Mở bảng của nhóm, chọn ba việc ưu tiên và thống nhất bước tiếp theo. Một tuần rõ ràng hơn bắt đầu từ đó.</p><a class="btn btn-primary-custom" href="https://trello.com/">Mở Trello <span aria-hidden="true">↗</span></a></section>
+    <footer class="secondary-bg"><a class="brand" href="https://trello.com/">Trello<span class="brand-dot">.</span></a><p>Không gian cho ý tưởng. Động lực cho cả nhóm.</p><div class="footer-bottom"><span>© 2026 · Bài thực hành thiết kế newsletter</span><a href="index.html">Thông tin bảng màu</a></div><small>Thiết kế phục vụ học tập, không phải bản tin chính thức của Trello.</small></footer>
+  </main>
+</body>
+</html>
+'@
+$versions = @(
+  @{ File='newsletter_version1.html'; Name='01 · Ocean / Tươi sáng'; Css='style1.css'; Other='newsletter_version2.html'; Number='02' },
+  @{ File='newsletter_version2.html'; Name='02 · Terracotta / Ấm áp'; Css='style2.css'; Other='newsletter_version1.html'; Number='01' }
+)
+foreach ($version in $versions) {
+  $html = $template.Replace('{{NAME}}', $version.Name).Replace('{{CSS}}', $version.Css).Replace('{{OTHER}}', $version.Other).Replace('{{NUMBER}}', $version.Number)
+  Set-Content -LiteralPath (Join-Path $PSScriptRoot $version.File) -Value $html -Encoding UTF8
+}
